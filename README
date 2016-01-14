@@ -1,0 +1,43 @@
+
+This Matlab demo is meant to walk you through calculating the distribution of 
+rain from an input data set of daily rainfall accumulation, as described
+in: 
+
+Pendergrass, A.G. and D.L. Hartmann, 2014: Two modes of change of the 
+  distribution of rain. Journal of Climate, 27, 8357-8371. 
+  doi:10.1175/JCLI-D-14-00182.1.  
+
+and the shift and increase modes of response of the rainfall distribution
+to warming, occuring across ENSO events or global warming simulations. 
+The response to warming is described in: 
+
+Pendergrass, A.G. and D.L. Hartmann, 2014: Changes in the distribution 
+  of rain frequency and intensity in response to global warming. 
+  Journal of Climate, 27, 8372-8383. doi:10.1175/JCLI-D-14-00183.1. 
+
+Please cite one or both of these papers if you use or alter these scripts. 
+
+If you have access to the NCAR supercomputer, 
+yellowstone https://www2.cisl.ucar.edu/resources/yellowstone, the script
+
+raindistdemo_yellowstone.m 
+
+will get you going quickly with CESM large ensemble 
+(https://www2.cesm.ucar.edu/models/experiments/LENS) data. 
+
+But if you dont, thats ok, any gridded precipiation dataset will do. 
+For example, you can use daily rainfall data from a CMIP5 simulation 
+(GFDL-ESM2G is shown below, for the 1pctCO2 scenario)
+which you might be able to download, for example from PCMDI 
+(https://pcmdi.llnl.gov/projects/cmip5/)
+
+Or you can use data from GPCP 1dd 
+https://climatedataguide.ucar.edu/climate-data/gpcp-daily-global-precipitation-climatology-project
+or TRMM 3B42
+https://climatedataguide.ucar.edu/climate-data/trmm-tropical-rainfall-measuring-mission
+though looking at changes in those is different, and you'll have to get
+corresponding temperature data somewhere, if you're into that. 
+
+Have fun! 
+
+14 January 2016, Angeline Pendergrass, NCAR, Boulder CO. apgrass@uw.edu
