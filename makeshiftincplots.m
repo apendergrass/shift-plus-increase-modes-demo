@@ -192,6 +192,9 @@ pbinm=(1-10.^(-.1:-.1:-4)); % percentile bins for calculations
 xtickpercent=[30:10:90 91:99 99.1:.1:99.9 99.91:.01:99.99]/100; % percentiles for x-axes of percentile plots 
 xticks99=interp1(pbinm,1:length(pbinm),xtickpercent); % bin numbers of percentiles for plotting
 
+xtickratesp(isnan(xticks))=[];
+xticks(isnan(xticks))=[];
+
 % bin width
 db=(bincrates(3)-bincrates(2))./bincrates(2);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
