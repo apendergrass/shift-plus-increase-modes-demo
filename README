@@ -18,9 +18,9 @@ Pendergrass, A.G. and D.L. Hartmann, 2014: Changes in the distribution
 Please cite one or both of these papers if you use or alter these scripts. 
 
 If you have access to the NCAR supercomputer, 
-yellowstone https://www2.cisl.ucar.edu/resources/yellowstone, the script
+cheyenne https://www2.cisl.ucar.edu/resources/cheyenne, the script
 
-raindistdemo_yellowstone.m 
+raindistdemo_cheyenne.m 
 
 will get you going quickly with CESM large ensemble 
 (https://www2.cesm.ucar.edu/models/experiments/LENS) data. 
