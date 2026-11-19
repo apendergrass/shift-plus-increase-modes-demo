@@ -55,7 +55,8 @@ file2_2='pr_day_GFDL-ESM2G_1pctCO2_r1i1p1_00660101-00701231.nc';
 % To get the warming, you'll have to do a little data processing yourself. 
 % This assumes an input file with global-annual mean surface temperature
 % over the entire simulation 
-% tfile='tas_global-annual-mean.nc'; % han: ignore this, just a number for
+% tfile='tas_global-annual-mean.nc'; % han: ignore this, it is just the change in
+% global mean temperature between two epochs
 % the later calculation
 
 % global mean surface (or near-surface air) temperature change
