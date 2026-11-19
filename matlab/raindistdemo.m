@@ -1,4 +1,9 @@
 
+%% han: step01_make demo data
+
+% website for input CMIP5 data
+% http://esgdata.gfdl.noaa.gov/thredds/fileServer/gfdl_dataroot/NOAA-GFDL/GFDL-ESM2G/1pctCO2/day/atmos/day/r1i1p1/v20110601/pr/pr_day_GFDL-ESM2G_1pctCO2_r1i1p1_00610101-00651231.nc
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% This demo is meant to walk you through calculating the distribution of 
 %%% rain from an input data set of daily rainfall accumulation, as described
@@ -21,7 +26,7 @@
 
 %%% But if you dont, thats ok, any gridded precipiation dataset will do. 
 %%% For example, you can use daily rainfall data from a CMIP5 simulation 
-%%% (GFDL-ESM2G is shown below, for the 1pctCO2 scenario)
+%%% (GFDL-ESM2G is shown below, for the 1pctCO2 scenario)       %Han: 1pctCO2 means 1 percent per year increasing CO2 
 %%% which you might be able to download, for example from PCMDI 
 %%% (https://pcmdi.llnl.gov/projects/cmip5/)
 
@@ -35,25 +40,28 @@
 %%% 14 January 2016, Angeline Pendergrass, NCAR, Boulder CO. apgrass@uw.edu
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
+%%
 %%% SAMPLE INPUT FILE NAMES. You'll want to update these. If you actually
 %%% use the GFDL simulation, you'll have to concatenate data from 2
 %%% files... I'll assume you can figure that out. 
 
 %%% first 10 years from GFDL ESM2G
-filedir='/directory/with/data/';
-file1='pr_day_GFDL-ESM2G_1pctCO2_r1i1p1_00010101-00051231.nc';
-% file1='pr_day_GFDL-ESM2G_1pctCO2_r1i1p1_00060101-00101231.nc';
+filedir='\\wsl.localhost\ubuntu\home\jingya\shift-plus-increase-modes-demo\matlab\test_data\'; % change to your path
+file1_1='pr_day_GFDL-ESM2G_1pctCO2_r1i1p1_00010101-00051231.nc';
+file1_2='pr_day_GFDL-ESM2G_1pctCO2_r1i1p1_00060101-00101231.nc';
 
 % 10 years immediately prior to co2 doubling 
-file2='pr_day_GFDL-ESM2G_1pctCO2_r1i1p1_00610101-00651231.nc';
-% file2='pr_day_GFDL-ESM2G_1pctCO2_r1i1p1_00660101-00701231.nc';
+file2_1='pr_day_GFDL-ESM2G_1pctCO2_r1i1p1_00610101-00651231.nc';
+file2_2='pr_day_GFDL-ESM2G_1pctCO2_r1i1p1_00660101-00701231.nc';
 
 % To get the warming, you'll have to do a little data processing yourself. 
 % This assumes an input file with global-annual mean surface temperature
 % over the entire simulation 
-tfiledir='/where/your/temperature/data/is/';
-tfile='tas_global-annual-mean.nc';
+% tfile='tas_global-annual-mean.nc'; % han: ignore this, just a number for
+% the later calculation
+
+% global mean surface (or near-surface air) temperature change
+dt=4.047; % accroding to the origin 'raindistdemodata.mat'
 
 %%% Otherwise, just get your daily precip data, in mm/d, and in an array
 %%% with dimension order [lat,lon,days]. 
@@ -62,41 +70,48 @@ tfile='tas_global-annual-mean.nc';
 %pdata1 % first epoch
 %pdata2 % second (assumed warmer) epoch
 
-% global mean surface (or near-surface air) temperature change
-%dt
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-lat=ncread([filedir file1],'lat');
-lon=ncread([filedir file1],'lon');
+lat=ncread([filedir file1_1],'lat');
+lon=ncread([filedir file1_1],'lon');
 
-pr=ncread([filedir file1],'pr'); 
+pr_1=ncread([filedir file1_1],'pr');
+pr_2=ncread([filedir file1_2],'pr');
+pr=cat(3, pr_1, pr_2);
+
 %%% potentially deal with concatenation first. 
-pr=pr(:,:,1:3650);
+% pr=pr(:,:,1:3650);
 
 L=2.5e6; % w/m2. latent heat of vaporization of water
 wm2tommd=1./L*3600*24; % conversion from w/m2 to mm/d
 
-pdata1=permute(pr,[2 1 3])*1000*L*wm2tommd;
+pdata1=permute(pr,[2 1 3])*L*wm2tommd;
 
-pr=ncread([filedir file2],'pr');
-pr=pr(:,:,3651:7300);
-pdata2=permute(pr,[2 1 3])*1000*L*wm2tommd;
+pr_1=ncread([filedir file2_1],'pr');
+pr_2=ncread([filedir file2_2],'pr');
+pr=cat(3, pr_1, pr_2);
+
+pdata2=permute(pr,[2 1 3])*L*wm2tommd;
 clear pr
 
-tas=ncread([tfiledir tfile],'tas');
 years=1:70;
 years(1:10)
 years(61:70)
 
-dt=mean(tas(61:70)-tas(1:10));
+save('han_demopdata.mat','pdata1','pdata2','lat','lon','dt');
+
+% dt=mean(tas(61:70)-tas(1:10));
 
 %save demopdata.mat pdata1 pdata2 lat lon dt
 
+
+%%
 [ppdf1,pamt1,ppdf2,pamt2,bincrates]=makeraindist(pdata1,pdata2,lat,lon);
 
 
-%save raindistdemodata.mat ppdf1 pamt1 ppdf2 pamt2 bincrates dt
+save han_raindistdemodata.mat ppdf1 pamt1 ppdf2 pamt2 bincrates dt
 
-makeshiftincplots(ppdf1,pamt1,ppdf2,pamt2,dt,bincrates);
+[shift,inc,err]=makeshiftincplots(ppdf1,pamt1,ppdf2,pamt2,dt,bincrates);
 
