@@ -1,6 +1,4 @@
 
-%% han: step01_make demo data
-
 % website for input CMIP5 data
 % http://esgdata.gfdl.noaa.gov/thredds/fileServer/gfdl_dataroot/NOAA-GFDL/GFDL-ESM2G/1pctCO2/day/atmos/day/r1i1p1/v20110601/pr/pr_day_GFDL-ESM2G_1pctCO2_r1i1p1_00610101-00651231.nc
 
