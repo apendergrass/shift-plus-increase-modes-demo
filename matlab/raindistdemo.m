@@ -68,8 +68,6 @@ dt=4.047; % accroding to the origin 'raindistdemodata.mat'
 %pdata1 % first epoch
 %pdata2 % second (assumed warmer) epoch
 
-
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 lat=ncread([filedir file1_1],'lat');
